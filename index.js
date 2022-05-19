@@ -3,9 +3,9 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken')
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config()
-const app = express()
-const port = process.env.PORT || 5000
 
+const port = process.env.PORT || 5000
+const app = express()
 
 // middleware
 app.use(cors())
@@ -16,6 +16,7 @@ app.use(express.json())
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.fpkcn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+console.log(uri)
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 // ===================
 function verifyJWT(req, res, next) {
@@ -38,6 +39,7 @@ function verifyJWT(req, res, next) {
 async function run() {
     try {
         await client.connect()
+        console.log('db connected')
         const serviceCollection = client.db('doctors_portal').collection('services')
         const bookingCollection = client.db('doctors_portal').collection('booking')
         const userCollection = client.db('doctors_portal').collection('users')
